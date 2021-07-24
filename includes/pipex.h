@@ -26,6 +26,12 @@ typedef	struct s_args
 
 void	ft_error(int id, char *cmd);
 void	free_array(void **array);
+int		count_pipe(t_cmd *cmd);
+int		**create_pipe_fd(int count);
+void	ft_error_exec(int id, char *cmd);
+int		check_equals_sign(char *argv);
+void	dup_fd_start(int fd_out, int fd_in);
+char	*get_env_char(char **env, char *str);
 void	exec_run(t_args *args, char **cmd);
 void	execute_pipe(t_args *args);
 

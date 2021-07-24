@@ -1,32 +1,5 @@
 #include "includes/pipex.h"
-
-int	check_equals_sign(char *argv)
-{
-	int	i;
-
-	i = 0;
-	while (argv[i] != '=' && argv[i] != '\0')
-		i++;
-	return (i);
-}
-
-char	*get_env_char(char **env, char *str)
-{
-	int		i;
-	char	*ptr;
-
-	i = -1;
-	while (env[++i])
-	{
-		if (!ft_strncmp(env[i], str, ft_strlen(str) > check_equals_sign(env[i])
-				? ft_strlen(str) : check_equals_sign(env[i])))
-		{
-			ptr = env[i];
-			return (ptr + (ft_strlen(str) + 1));
-		}
-	}
-	return (NULL);
-}
+#include <stdio.h>
 
 static char	*add_slach_arg(char *str)
 {
@@ -51,28 +24,15 @@ static void	exec_fork(char **cmd, t_args *args, char *bin)
 {
 	int		err_code;
 
-	if (args->fd_out != 1)
-	{
-		close(1);
-		dup2(args->fd_out, 1);
-	}
-	if (args->fd_in != 0)
-	{
-		close(0);
-		dup2(args->fd_in, 0);
-	}
-	// write(1, cmd[0], ft_strlen(cmd[0]));
-	// write(1, cmd[1], ft_strlen(cmd[1]));
 	err_code = execve(bin, cmd, args->env);
 	if (err_code == -1)
-		ft_error(6, cmd[0]);
+		ft_error_exec(6, cmd[0]);
 }
 
 static char	*exec_case_handling(char **cmd)
 {
 	char		*bin;
 	int	code_err;
-	//struct stat	buff[1];
 
 	bin = NULL;
 	if (!ft_strncmp("./", cmd[0], 2)
@@ -82,7 +42,7 @@ static char	*exec_case_handling(char **cmd)
 		bin = ft_strdup(cmd[0]);
 		code_err = access(cmd[0], 0);
 		if (code_err == -1)
-			ft_error(3, cmd[0]);
+			ft_error_exec(3, cmd[0]);
 	}
 	return (bin);
 }
@@ -98,9 +58,8 @@ static char	*exec_find_handling(char **env, char **cmd)
 	ptr = get_env_char(env, "PATH");
 	path = ft_split(ptr, ':');
 	if (!ptr || !path)
-		ft_error(3, cmd[0]);
+		ft_error_exec(3, cmd[0]);
 	ptr = add_slach_arg(cmd[0]);
-	//printf("%s\n", ptr);
 	i = -1;
 	while (path[++i])
 	{
@@ -113,7 +72,7 @@ static char	*exec_find_handling(char **env, char **cmd)
 	free_array((void **)path);
 	free(ptr);
 	if (code_err == -1)
-		ft_error(2, cmd[0]);
+		ft_error_exec(2, cmd[0]);
 	return (bin);
 }
 

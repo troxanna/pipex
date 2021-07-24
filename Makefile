@@ -13,12 +13,12 @@
 NAME = pipex
 
 HEAD = ./includes/
-SRCS = ./srcs/
+SRCS_BONUS = ./bonus/
 GNL = ./gnl/
 
 CFLAGS = -Wall -Wextra -Werror
 
-C_FILE = main.c $(GNL)get_next_line.c $(GNL)get_next_line_utils.c utils.c exec_command.c pipe.c
+C_FILE = main.c $(GNL)get_next_line.c $(GNL)get_next_line_utils.c utils.c exec_command.c pipe.c utils_pipe.c
 
 O_FILE = $(C_FILE:.c=.o)
 
@@ -31,6 +31,8 @@ $(NAME): $(O_FILE)
 
 %.o: %.c $(HEAD)
 	gcc -c $(СFLAGS) $< -o $@
+
+bonus: 
 
 clean:
 	@rm -f $(O_FILE)

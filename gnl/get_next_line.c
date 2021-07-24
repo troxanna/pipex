@@ -93,5 +93,7 @@ int					get_next_line(int fd, char **line)
 		*line = ft_strjoin(*line, buff);
 	}
 	free(buff);
+	if (remainder)
+		free(remainder);
 	return (!read_c_b ? 0 : 1);
 }
