@@ -16,13 +16,16 @@ void	add_cmd(t_cmd **cmd, t_cmd *new_cmd)
 	t_cmd	*ptr;
 
 	ptr = *cmd;
-	if (*cmd == NULL)
-		*cmd = new_cmd;
-	else
+	if (cmd && new_cmd)
 	{
-		while (ptr->next)
-			ptr = ptr->next;
-		ptr->next = new_cmd;
+		if (*cmd == NULL)
+		*cmd = new_cmd;
+		else
+		{
+			while (ptr->next)
+				ptr = ptr->next;
+			ptr->next = new_cmd;
+		}
 	}
 }
 
@@ -59,22 +62,19 @@ int		parser(char **argv, char **env, int argc)
 	i = 0;
 	args->cmd = new_cmd();
 	while (++i < argc - 3)
-	{
 		add_cmd(&(args->cmd), new_cmd());
-		//printf("%d\n", i);
-	}
-	ptr = args->cmd->next;
-	printf("%p\n", ptr->next);
+	ptr = args->cmd;
 	i = -1;
 	j = 2;
 	while (ptr && ++i < argc - 3)
 	{
 		tmp = ft_strdup(argv[j]);
-		//ptr->cmd = ft_split(tmp, ' ');
+		ptr->cmd = ft_split(tmp, ' ');
 		free(tmp);
 		j++;
-		//ptr = ptr->next;
+		ptr = ptr->next;
 	}
+	exec_run(args, args->cmd->cmd);
 	return (1);
 }
 

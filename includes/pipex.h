@@ -24,6 +24,8 @@ typedef	struct s_args
 }				t_args;
 
 void	ft_error(int id, char *cmd);
-void	exec_run(t_cmd *cmd, char **env);
+void	free_array(void **array);
+void	exec_run(t_args *args, char **cmd);
+
 
 #endif
