@@ -1,4 +1,5 @@
 #include "includes/pipex.h"
+
 t_cmd	*new_cmd(void)
 {
 	t_cmd	*new_cmd;
@@ -53,6 +54,7 @@ int		parser(char **argv, char **env, int argc)
 	int		j;
 	char	*tmp;
 	t_cmd	*ptr;
+	//добавить в структуру код ошибки
 
 	fd_in = open(argv[1], O_RDONLY, 0644);
 	fd_out = open(argv[4], O_RDWR | O_CREAT | O_TRUNC, 0777);
@@ -74,7 +76,10 @@ int		parser(char **argv, char **env, int argc)
 		j++;
 		ptr = ptr->next;
 	}
+	//поправить cat -e - почему то не работает execve с флагом cat -e
 	exec_run(args, args->cmd->cmd);
+	//execute_pipe(args);
+	
 	return (1);
 }
 

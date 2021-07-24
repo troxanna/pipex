@@ -18,7 +18,7 @@ GNL = ./gnl/
 
 CFLAGS = -Wall -Wextra -Werror
 
-C_FILE = main.c $(GNL)get_next_line.c $(GNL)get_next_line_utils.c utils.c exec_command.c
+C_FILE = main.c $(GNL)get_next_line.c $(GNL)get_next_line_utils.c utils.c exec_command.c pipe.c
 
 O_FILE = $(C_FILE:.c=.o)
 

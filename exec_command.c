@@ -61,6 +61,8 @@ static void	exec_fork(char **cmd, t_args *args, char *bin)
 		close(0);
 		dup2(args->fd_in, 0);
 	}
+	// write(1, cmd[0], ft_strlen(cmd[0]));
+	// write(1, cmd[1], ft_strlen(cmd[1]));
 	err_code = execve(bin, cmd, args->env);
 	if (err_code == -1)
 		ft_error(6, cmd[0]);
@@ -87,7 +89,6 @@ static char	*exec_case_handling(char **cmd)
 
 static char	*exec_find_handling(char **env, char **cmd)
 {
-	//struct stat	buff[1];
 	char		**path;
 	int			i;
 	char		*ptr;
