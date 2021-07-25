@@ -1,5 +1,30 @@
 #include "includes/pipex.h"
 
+void	check_quotes(char *cmd)
+{
+	int	i;
+
+	i = -1;
+	while (cmd[++i])
+	{
+		if (cmd[i] == ' ')
+			cmd[i] = '\"';
+		if (cmd[i] == '\'')
+		{
+			cmd[i] = '\"';
+			i++;
+			while (cmd[i] != '\'' && cmd[i])
+				i++;
+			if (cmd[i] == '\'')
+			{
+				cmd[i] = '\"';
+				i++;
+			}
+			else
+				ft_error(7, NULL);
+		}
+	}
+}
 
 void	free_array(void **array)
 {
@@ -22,44 +47,29 @@ int	check_equals_sign(char *argv)
 	return (i);
 }
 
-char	*get_env_char(char **env, char *str)
+void	ft_error_exec(int id, char *cmd, t_args *args)
 {
-	int		i;
-	char	*ptr;
-
-	i = -1;
-	while (env[++i])
-	{
-		if (!ft_strncmp(env[i], str, ft_strlen(str) > check_equals_sign(env[i])
-				? ft_strlen(str) : check_equals_sign(env[i])))
-		{
-			ptr = env[i];
-			return (ptr + (ft_strlen(str) + 1));
-		}
-	}
-	return (NULL);
-}
-
-void	ft_error_exec(int id, char *cmd)
-{
+	dup2(args->fd, args->fd_out);
+	write(args->fd, "\033[1m" ANSI_COLOR_RED "", 10);
 	if (id == 2)
 	{
-		ft_putstr_fd(cmd, 1);
-		ft_putstr_fd(": command not found", 1);
-		ft_putchar_fd('\n', 1);
+		ft_putstr_fd(cmd, args->fd);
+		ft_putstr_fd(": command not found", args->fd);
+		ft_putchar_fd('\n', args->fd);
 	}
 	else if (id == 3)
 	{
-		ft_putstr_fd(cmd, 1);
-		ft_putstr_fd(": no such file or directory", 1);
-		ft_putchar_fd('\n', 1);
+		args->err_code = -1;
+		ft_putstr_fd(cmd, args->fd);
+		ft_putstr_fd(": no such file or directory", args->fd);
+		ft_putchar_fd('\n', args->fd);
 	}
 	else if (id == 6)
 	{
-		ft_putstr_fd(cmd, 1);
-		ft_putstr_fd(": permission denied\n", 1);
+		ft_putstr_fd(cmd, args->fd);
+		ft_putstr_fd(": permission denied\n", args->fd);
 	}
-	exit(1);
+	exit(args->err_code);
 }
 
 void	ft_error(int id, char *cmd)
@@ -78,6 +88,11 @@ void	ft_error(int id, char *cmd)
 	else if (id == 5)
 	{
 		ft_putstr_fd("not enough arguments", 1);
+		ft_putchar_fd('\n', 1);
+	}
+	else if (id == 7)
+	{
+		ft_putstr_fd("unclosed quotes", 1);
 		ft_putchar_fd('\n', 1);
 	}
 	exit(1);

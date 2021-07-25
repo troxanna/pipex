@@ -31,26 +31,27 @@ static int	fork_start(int *pid, int **fd, int i)
 
 static void	wait_fork(pid_t *pid, int i, int **fd)
 {
-	int			status;
-    int err_code;
-	while (i > -1)
-		waitpid(pid[i--], &status, WUNTRACED | WCONTINUED);
+	int	status;
+	int	err_code;
+
+	waitpid(pid[i], &status, WUNTRACED | WCONTINUED);
 	err_code = WEXITSTATUS(status);
-	free_array((void **)fd);
+	if (err_code)
+		exit(1);
 }
 
 void	execute_pipe(t_args *args)
 {
-    int **fd;
-    pid_t   *pid;
-    t_cmd   *ptr;
-    int i;
+	int		**fd;
+	pid_t	*pid;
+	t_cmd	*ptr;
+	int		i;
 
-    fd = create_pipe_fd(count_pipe(args->cmd) + 1);
+	fd = create_pipe_fd(count_pipe(args->cmd) + 1);
 	ptr = args->cmd;
 	pid = (pid_t *)malloc(sizeof(pid_t) * count_pipe(args->cmd) + 1);
-    dup_fd_start(args->fd_out, args->fd_in);
-    i = -1;
+	dup_fd_start(args->fd_out, args->fd_in);
+	i = -1;
 	while (++i < count_pipe(args->cmd))
 		pipe(fd[i]);
 	i = -1;
@@ -61,10 +62,9 @@ void	execute_pipe(t_args *args)
 			pipe_child(fd, i, count_pipe(args->cmd), args->fd_out);
 			exec_run(args, ptr->cmd);
 		}
+		wait_fork(pid, i, fd);
 		ptr = ptr->next;
 	}
-	while (1)
-		;
-	wait_fork(pid, i, fd);
+	free_array((void **)fd);
 	free(pid);
 }

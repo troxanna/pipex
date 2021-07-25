@@ -14,13 +14,19 @@ NAME = pipex
 
 HEAD = ./includes/
 SRCS_BONUS = ./bonus/
-GNL = ./gnl/
+GNL = ./get_next_line/
 
 CFLAGS = -Wall -Wextra -Werror
 
-C_FILE = main.c $(GNL)get_next_line.c $(GNL)get_next_line_utils.c utils.c exec_command.c pipe.c utils_pipe.c
+C_FILE = $(GNL)get_next_line.c $(GNL)get_next_line_utils.c utils.c exec_command.c pipe.c utils_pipe.c init.c parser.c
 
-O_FILE = $(C_FILE:.c=.o)
+C_FILE_MAIN = main.c $(C_FILE)
+
+C_FILE_BONUS = ./pipex_bonus/main.c ./pipex_bonus/limiter.c $(C_FILE)
+
+O_FILE = $(C_FILE_MAIN:.c=.o)
+
+O_FILE_BONUS = $(C_FILE_BONUS:.c=.o)
 
 all:
 	$(MAKE) $(NAME) -j 4
@@ -32,7 +38,9 @@ $(NAME): $(O_FILE)
 %.o: %.c $(HEAD)
 	gcc -c $(СFLAGS) $< -o $@
 
-bonus: 
+bonus: $(O_FILE_BONUS)
+	$(MAKE) -C ./libft bonus
+	gcc $(O_FILE_BONUS) ./libft/libft.a -o $(NAME)
 
 clean:
 	@rm -f $(O_FILE)

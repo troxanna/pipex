@@ -11,14 +11,14 @@ void	dup_fd_start(int fd_out, int fd_in)
 int	count_pipe(t_cmd *cmd)
 {
 	t_cmd	*ptr;
-	int			i;
+	int		i;
 
 	i = 0;
 	ptr = cmd;
-	while (cmd->next)
+	while (ptr->next)
 	{
 		i++;
-		cmd = cmd->next;
+		ptr = ptr->next;
 	}
 	return (i);
 }
@@ -29,8 +29,8 @@ int	**create_pipe_fd(int count)
 	int		i;
 
 	i = 0;
-	fd = (int **)malloc(sizeof(int *) * count + 1);
-	fd[count] = NULL;
+	fd = (int **)malloc(sizeof(int *) * count);
+	fd[count - 1] = NULL;
 	while (i < count)
 		fd[i++] = (int *)malloc(sizeof(int) * 2);
 	return (fd);

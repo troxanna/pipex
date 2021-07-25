@@ -17,14 +17,14 @@
 # include <unistd.h>
 # include <string.h>
 
-typedef struct		s_list
+typedef struct s_list
 {
 	void			*content;
 	struct s_list	*next;
 }					t_list;
 
 t_list				*ft_lstmap(t_list *lst, void *(*f)(void *),
-											void (*del)(void *));
+						void (*del)(void *));
 void				ft_lstiter(t_list *lst, void (*f)(void *));
 void				ft_lstclear(t_list **lst, void (*del)(void *));
 void				ft_lstdelone(t_list *lst, void (*del)(void *));
@@ -66,7 +66,7 @@ void				ft_putendl_fd(char *s, int fd);
 char				*ft_itoa(int n);
 size_t				ft_strlcat(char *dest, const char *src, size_t size);
 char				*ft_strmapi(char const *s, char (*f)(unsigned int, char));
-int					ft_memcmp(const void *memptr1, const void *memptr2,
-																size_t num);
+int					ft_memcmp(const void *memptr1,
+						const void *memptr2, size_t num);
 
 #endif

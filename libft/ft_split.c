@@ -12,9 +12,9 @@
 
 #include "libft.h"
 
-static void		*ft_split_free(char **str_main)
+static void	*ft_split_free(char **str_main)
 {
-	int			i;
+	int	i;
 
 	i = 0;
 	while (str_main[i])
@@ -26,11 +26,11 @@ static void		*ft_split_free(char **str_main)
 	return (NULL);
 }
 
-static char		**ft_split_malloc_char(char const *s, char c, char **str_main)
+static char	**ft_split_malloc_char(char const *s, char c, char **str_main)
 {
-	int			start;
-	int			i;
-	int			j;
+	int	start;
+	int	i;
+	int	j;
 
 	i = 0;
 	j = 0;
@@ -55,9 +55,9 @@ static char		**ft_split_malloc_char(char const *s, char c, char **str_main)
 	return (NULL);
 }
 
-static char		**ft_split_string_null(int count)
+static char	**ft_split_string_null(int count)
 {
-	char **str_main;
+	char	**str_main;
 
 	str_main = (char **)malloc(count * sizeof(char *));
 	if (str_main)
@@ -68,11 +68,11 @@ static char		**ft_split_string_null(int count)
 	return (NULL);
 }
 
-static char		**ft_split_malloc_string(char const *s, char c)
+static char	**ft_split_malloc_string(char const *s, char c)
 {
-	char		**str_main;
-	int			i;
-	int			count;
+	char	**str_main;
+	int		i;
+	int		count;
 
 	i = 0;
 	count = 1;
@@ -97,9 +97,9 @@ static char		**ft_split_malloc_string(char const *s, char c)
 	return (NULL);
 }
 
-char			**ft_split(char const *s, char c)
+char	**ft_split(char const *s, char c)
 {
-	char		**s_main;
+	char	**s_main;
 
 	if (!s)
 		return (NULL);

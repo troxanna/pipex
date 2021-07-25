@@ -35,7 +35,7 @@ static char	*ft_strjoin_fill_in(char const *s1, char const *s2, size_t len)
 	return (str);
 }
 
-char		*ft_strjoin(char const *s1, char const *s2)
+char	*ft_strjoin(char const *s1, char const *s2)
 {
 	size_t	len;
 

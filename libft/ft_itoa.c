@@ -55,7 +55,7 @@ static char	*ft_itoa_null(void)
 	return (NULL);
 }
 
-char		*ft_itoa(int n)
+char	*ft_itoa(int n)
 {
 	char	*str;
 	int		len;
