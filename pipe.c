@@ -34,10 +34,12 @@ static void	wait_fork(pid_t *pid, int i, int **fd)
 	int	status;
 	int	err_code;
 
-	waitpid(pid[i], &status, WUNTRACED | WCONTINUED);
+	while (pid[i])
+		waitpid(pid[--i], &status, WUNTRACED | WCONTINUED);
 	err_code = WEXITSTATUS(status);
 	if (err_code)
 		exit(1);
+	free_array((void **)fd);
 }
 
 void	execute_pipe(t_args *args)
@@ -62,9 +64,8 @@ void	execute_pipe(t_args *args)
 			pipe_child(fd, i, count_pipe(args->cmd), args->fd_out);
 			exec_run(args, ptr->cmd);
 		}
-		wait_fork(pid, i, fd);
 		ptr = ptr->next;
 	}
-	free_array((void **)fd);
+	wait_fork(pid, i, fd);
 	free(pid);
 }
